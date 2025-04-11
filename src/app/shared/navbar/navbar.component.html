@@ -1,0 +1,27 @@
+<nav class="bg-gray-900 text-white shadow-md">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+      <!-- Logo / Brand -->
+      <a routerLink="/" class="text-2xl font-bold text-blue-400 hover:text-blue-300 transition">
+        🎮 Sala de Juegos
+      </a>
+  
+      <!-- Nav links -->
+      <div class="flex items-center gap-4">
+        <ng-container *ngIf="userEmail; else guestLinks">
+          <span class="text-sm text-gray-300">👤 {{ userEmail }}</span>
+          <button
+            (click)="logout()"
+            class="rounded bg-red-500 px-4 py-2 text-sm font-semibold text-white hover:bg-red-600 transition"
+          >
+            Cerrar sesión
+          </button>
+        </ng-container>
+  
+        <ng-template #guestLinks>
+          <a routerLink="/login" class="text-sm text-blue-400 hover:underline">Iniciar sesión</a>
+          <a routerLink="/signup" class="text-sm text-blue-400 hover:underline">Registrarse</a>
+        </ng-template>
+      </div>
+    </div>
+  </nav>
+  

@@ -1,0 +1,45 @@
+
+<div class="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
+    <div class="w-full max-w-md rounded-2xl bg-gray-800 p-8 shadow-2xl">
+      <h1 class="mb-6 text-center text-3xl font-bold text-blue-400">🎮Inicio de sesión</h1>
+      <form (ngSubmit)="login()" class="flex flex-col gap-4">
+        <input
+          [(ngModel)]="email"
+          name="email"
+          type="email"
+          placeholder="Correo"
+          required
+          class="rounded-lg border-none bg-gray-700 p-3 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+        />
+        <input
+          [(ngModel)]="password"
+          name="password"
+          type="password"
+          placeholder="Contraseña"
+          required
+          class="rounded-lg border-none bg-gray-700 p-3 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          type="submit"
+          class="mt-4 rounded-lg bg-blue-500 p-3 font-semibold text-white transition hover:bg-blue-600"
+        >
+          Iniciar sesión
+        </button>
+
+        <button
+        type="button"
+        (click)="fastAccess()"
+        class="w-full border border-purple-300 text-purple-300 py-2 rounded hover:bg-purple-300 hover:text-gray-900 transition"
+        > Acceso rápido (usuario de prueba)</button>
+
+        <p *ngIf="errorMessage" class="text-red-400 text-sm text-center">{{ errorMessage }}</p>
+      </form>
+
+      <p class="text-sm text-center mt-4">
+        ¿No tienes cuenta?
+        <a routerLink="/signup" class="text-blue-400 hover:underline">Regístrate</a>
+      </p>
+      
+    </div>
+  </div>
+  
