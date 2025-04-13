@@ -11,22 +11,19 @@ import { Route, Router, RouterLink } from '@angular/router';
   styleUrl: './signup.component.scss'
 })
 export class SignupComponent {
-
   email = '';
   password = '';
-  errorMessage: string | null = null;
-
+  errorMessage: string | null | undefined = null;
 
   constructor(private authService: AuthService, private router: Router) {
   }
 
-  signUp(){
-    this.authService.signUp(this.email, this.password)
-                    .then(() => { this.router.navigate(['/home']); })
-                    .catch((error) => { this.errorMessage = error.errorMessage;});
+  signUp() {
+    this.authService.signUp(this.email, this.password).then((data) => {
+        if (data) {
+          this.router.navigate(['/home']);
+        }
+    });
   }
-
-
-
-
+  
 }

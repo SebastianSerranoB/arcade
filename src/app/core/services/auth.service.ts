@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { createClient, SupabaseClient, Session } from '@supabase/supabase-js';
+import { createClient, SupabaseClient, Session, User } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { ToastService } from './toast.service';
@@ -18,18 +18,18 @@ export class AuthService {
 
   async signUp(email: string, password: string){
     const { data, error } = await this.supabase.auth.signUp({ email, password });
-    
+
     if (error) {
-      if (error.message.includes('User already registered')) {
+      if (error.message.toLowerCase().includes('already')) {
         this.toast.showError('Ya existe una cuenta con ese correo.');
       } else {
-        this.toast.showError(error.message || 'Ocurrio un error al registrar el usuario.');
+        this.toast.showError('Ocurrio un error al registrar el usuario.');
       }
-      return;
+      return null;
     }
-
-    this.toast.showSuccess('Usuario registrado con exito! Revisa tu correo para confirmarlo.');
-    this.router.navigate(['/home']);
+    else{
+      this.toast.showSuccess('Usuario registrado con exito! Revisa tu correo para confirmarlo.');
+    }
 
     return data;
   }
@@ -45,8 +45,9 @@ export class AuthService {
     if (error) throw error;
   }
 
-  getUser(){
-    return this.supabase.auth.getUser();
+  async getUser() : Promise<User | null>{
+    const { data } = await this.supabase.auth.getUser();
+    return data.user ?? null;
   }
 
   onAuthStateChange(callback: (session: Session | null) => void){
@@ -60,6 +61,16 @@ export class AuthService {
   }
 
 
+  async getSession(){
+    const{ data, error } = await this.supabase.auth.getSession();
+    if(error) throw error;
+    return data.session;
+  }
+
+  async resendEmailConfirmation(email: string){
+    const{error} = await this.supabase.auth.resend(({ type: 'signup', email}));
+    if(error) throw error;
+  }
 
 
 

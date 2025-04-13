@@ -7,6 +7,10 @@
   
       <!-- Nav links -->
       <div class="flex items-center gap-4">
+    
+        <a routerLink="/home" routerLinkActive="text-blue-500 underline"  class="hover:text-blue-400 transition">Inicio</a>
+        <a routerLink="/about" routerLinkActive="text-blue-500 underline" class="hover:text-blue-400 transition" >Quienes Somos</a>
+
         <ng-container *ngIf="userEmail; else guestLinks">
           <span class="text-sm text-gray-300">👤 {{ userEmail }}</span>
           <button
@@ -21,6 +25,7 @@
           <a routerLink="/login" class="text-sm text-blue-400 hover:underline">Iniciar sesión</a>
           <a routerLink="/signup" class="text-sm text-blue-400 hover:underline">Registrarse</a>
         </ng-template>
+
       </div>
     </div>
   </nav>

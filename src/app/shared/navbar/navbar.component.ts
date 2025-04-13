@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 export class NavbarComponent implements OnInit{
   userEmail : string | null = null;
 
-  constructor(private auth: AuthService){
+  constructor(private auth: AuthService, private router: Router){
   }
  
   ngOnInit(): void {
@@ -22,11 +22,9 @@ export class NavbarComponent implements OnInit{
   }
 
 
-
-
-
   logout(): void{
     this.auth.signOut();
+    this.router.navigate(['/login']);
   }
 
 }

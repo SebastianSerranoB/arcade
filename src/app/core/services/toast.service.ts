@@ -30,6 +30,25 @@ export class ToastService {
   });
 }
 
+showAction(message: string, actionText: string, action: () => void){
+  Swal.fire({
+    icon: 'warning',
+    title: 'Correo no verificado',
+    text: message,
+    showCancelButton: true,
+    confirmButtonText: actionText,
+    cancelButtonText: 'Más tarde',
+    confirmButtonColor: '#f59e0b',
+    cancelButtonColor: '#6b7280'
+  }).then((result) => {
+      if(result.isConfirmed){
+        action();
+      }
+ });
+
+}
+
+
 
 
 }
