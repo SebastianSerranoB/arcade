@@ -15,7 +15,7 @@ import { User } from '@supabase/supabase-js';
 export class HomeComponent implements OnInit{
  userEmail: string | null = null;
 
-  constructor(private auth: AuthService, private router: Router, private toast: ToastService){
+  constructor(private auth: AuthService, public router: Router, private toast: ToastService){
   }
 
   ngOnInit(): void {
