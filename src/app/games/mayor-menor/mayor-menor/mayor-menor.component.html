@@ -1,0 +1,18 @@
+<div class="flex flex-col items-center justify-center p-4 gap-4 text-center">
+    <h2 class="text-xl font-bold">Juego: Mayor o Menor</h2>
+  
+    <p class="text-lg">Carta actual: <span class="font-bold text-blue-600">{{ cartaActual }}</span></p>
+  
+    <div class="flex gap-4">
+      <button (click)="jugar('menor')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+        Menor
+      </button>
+      <button (click)="jugar('mayor')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+        Mayor
+      </button>
+    </div>
+  
+    <p class="text-lg mt-2">{{ mensaje }}</p>
+    <p>Puntaje: {{ puntaje }} | Vidas: {{ vidas }}</p>
+  </div>
+  

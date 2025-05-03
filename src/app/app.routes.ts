@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { HomeComponent } from './pages/home/home.component';
-import { AboutUsComponent } from './pages/about-us/about-us.component';
 import { ErrorComponent } from './pages/error/error.component';
 import { authGuard } from './core/guards/auth.guard';
 
@@ -20,6 +19,12 @@ export const routes: Routes = [
         canActivate: [authGuard],
         loadComponent: () => import('./pages/chat-room/chat-room.component').then(m => m.ChatRoomComponent)
     },
+    {
+        path: 'games/mayor-menor',
+        loadChildren: () =>
+          import('./games/mayor-menor/mayor-menor.module')
+            .then(m => m.MayorMenorModule)
+    },      
     { path: '**', component: ErrorComponent},
    
 ];
