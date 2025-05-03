@@ -1,18 +1,31 @@
-<div class="flex flex-col items-center justify-center p-4 gap-4 text-center">
-    <h2 class="text-xl font-bold">Juego: Mayor o Menor</h2>
-  
-    <p class="text-lg">Carta actual: <span class="font-bold text-blue-600">{{ cartaActual }}</span></p>
-  
-    <div class="flex gap-4">
-      <button (click)="jugar('menor')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
-        Menor
-      </button>
-      <button (click)="jugar('mayor')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
-        Mayor
-      </button>
-    </div>
-  
-    <p class="text-lg mt-2">{{ mensaje }}</p>
-    <p>Puntaje: {{ puntaje }} | Vidas: {{ vidas }}</p>
+<div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white p-6 flex flex-col items-center">
+  <h2 class="text-3xl text-blue-400 font-bold mb-4">♠️ Mayor o Menor ♣️</h2>
+  <p class="text-gray-300 mb-6 text-center">Adivina si la siguiente carta es mayor o es menor!</p>
+
+  <!-- Current Card -->
+  <div *ngIf="currentCard" class="mb-4">
+    <img [src]="currentCard.image" alt="Current card" class="w-40 shadow-lg rounded-xl" />
   </div>
-  
+
+  <!-- Guess Buttons -->
+  <div class="flex space-x-4 mb-6">
+    <button
+      (click)="guess('higher')"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold shadow-md"
+    >
+      Mayor
+    </button>
+    <button
+      (click)="guess('lower')"
+      class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-semibold shadow-md"
+    >
+      Menor
+    </button>
+  </div>
+
+  <!-- Score & Lives -->
+  <div class="text-center">
+    <p class="text-lg text-green-400">Puntaje: {{ score }}</p>
+    <p class="text-lg text-red-400">Vidas: {{ lives }}</p>
+  </div>
+</div>
