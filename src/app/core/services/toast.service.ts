@@ -48,6 +48,16 @@ showAction(message: string, actionText: string, action: () => void){
 
 }
 
+showGameOver(score: number){
+  Swal.fire({
+    icon: 'info',
+    title: 'Fin del juego',
+    text: `Tu puntaje fue de: ` + score,
+    showConfirmButton: true
+  });
+  
+}
+
 
 
 

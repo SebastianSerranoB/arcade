@@ -53,6 +53,9 @@ export class HomeComponent implements OnInit{
 
   }
 
+  navigateToMayorMenor() {
+    this.router.navigate(['/games/mayor-menor']);
+  }
 
 
 }

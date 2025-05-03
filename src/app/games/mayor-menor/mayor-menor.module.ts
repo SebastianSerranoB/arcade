@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { routes } from './mayor-menor.routes';
 
 
-
 @NgModule({
   declarations: [
     MayorMenorComponent

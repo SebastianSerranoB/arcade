@@ -72,6 +72,9 @@ export class AuthService {
     if(error) throw error;
   }
 
+  getClient(): SupabaseClient {
+    return this.supabase;
+  }
 
 
 

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CardApiService } from '../card-api.service';
+import { ToastService } from '../../../core/services/toast.service';
+import { GameResultService } from '../../../core/services/game-result.service';
 
 @Component({
   selector: 'app-mayor-menor',
@@ -13,7 +15,7 @@ export class MayorMenorComponent implements OnInit {
   score = 0;
   lives = 3;
 
-  constructor(private cardService: CardApiService){
+  constructor(private cardService: CardApiService, private toastService: ToastService, private gameResultService: GameResultService){
   }
   
   ngOnInit(): void {
@@ -54,7 +56,8 @@ export class MayorMenorComponent implements OnInit {
       this.currentCard = nextCard;
 
       if(this.lives === 0){
-        alert(`Game over! Your score: ${this.score}`); //toastservice
+        this.toastService.showGameOver(this.score);
+        this.gameResultService.saveResult(this.score);
         this.resetGame();
       }
 
@@ -62,6 +65,8 @@ export class MayorMenorComponent implements OnInit {
     });
 
   }
+
+  
 
 
   resetGame(){

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createClient, RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 
 export interface Message{
   id: string;
@@ -16,8 +17,8 @@ export class ChatService {
   private supabase: SupabaseClient;
   private channel: RealtimeChannel | null = null;
 
-  constructor() { 
-    this.supabase = createClient(environment.supabaseUrl, environment.supabaseAnonKey);
+  constructor( private auth: AuthService) { 
+    this.supabase = auth.getClient();
   }
 
   async fetchMessages(): Promise<Message[]>{
