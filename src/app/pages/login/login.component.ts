@@ -33,8 +33,8 @@ export class LoginComponent {
  }
 
  fastAccess(){
-  this.email = 'test@example.com';
-  this.password = 'test1234';
+  this.email = 'lower92469@deusa7.com';
+  this.password = '123123';
  }
 
 

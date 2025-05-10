@@ -57,5 +57,9 @@ export class HomeComponent implements OnInit{
     this.router.navigate(['/games/mayor-menor']);
   }
 
+   navigateToAhorcado() {
+    this.router.navigate(['/games/ahorcado']);
+  }
+
 
 }

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MayorMenorComponent } from './mayor-menor/mayor-menor.component';
 import { RouterModule } from '@angular/router';
-import { routes } from './mayor-menor.routes';
+import { routes } from './games.routes';
 
 
 @NgModule({
@@ -14,4 +14,4 @@ import { routes } from './mayor-menor.routes';
     RouterModule.forChild(routes)
   ]
 })
-export class MayorMenorModule { }
+export class GamesModule { }

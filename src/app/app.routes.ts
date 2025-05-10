@@ -20,11 +20,12 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/chat-room/chat-room.component').then(m => m.ChatRoomComponent)
     },
     {
-        path: 'games/mayor-menor',
+        path: 'games',
+        canActivate: [authGuard],
         loadChildren: () =>
-          import('./games/mayor-menor/mayor-menor.module')
-            .then(m => m.MayorMenorModule)
-    },      
+          import('./games/games/games.module')
+            .then(m => m.GamesModule)
+    },   
     { path: '**', component: ErrorComponent},
    
 ];
