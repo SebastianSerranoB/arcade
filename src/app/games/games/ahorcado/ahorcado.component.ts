@@ -13,10 +13,10 @@ export class AhorcadoComponent implements OnInit{
   maxAttempts = 6;
 
   words: string[] = [
-  'PROGRAMAR', 'ANGULAR', 'DESARROLLO', 'NEÓN', 'AHORCADO', 'JUEGO', 'CÓDIGO', 'TIPOGRAFÍA',
+  'PROGRAMAR', 'ANGULAR', 'DESARROLLO', 'NEON', 'AHORCADO', 'JUEGO', 'CODIGO', 'TIPOGRAFIA',
   'SOFTWARE', 'TECLADO', 'PANTALLA', 'VARIABLE', 'FUNCION', 'COMPONENTE', 'SERVICIO', 'RUTA',
-  'MODULO', 'ARCADE', 'BOTÓN', 'ESTILO', 'HTML', 'CSS', 'TIPO', 'ANGULO', 'FLECHA', 'JAVASCRIPT',
-  'TIPADO', 'OBJETO', 'INTERFAZ', 'ANIMACIÓN'
+  'MODULO', 'ARCADE', 'BOTON', 'ESTILO', 'HTML', 'CSS', 'TIPO', 'ANGULO', 'FLECHA', 'JAVASCRIPT',
+  'TIPADO', 'OBJETO', 'INTERFAZ', 'ANIMACION'
 ];
 
 
@@ -24,11 +24,6 @@ export class AhorcadoComponent implements OnInit{
    this.selectRandomHiddenWord();
   }
 
-  selectRandomHiddenWord(): void{
-    const randomIndex = Math.floor(Math.random() * this.words.length);
-    this.hiddenWord = this.words[randomIndex];
-    console.log('The hidden word is: ' + this.hiddenWord); 
-  }
 
   get failedAttempts(): number{
     return this.selectedLetters.filter(l => !this.hiddenWord.includes(l)).length;
@@ -66,18 +61,32 @@ export class AhorcadoComponent implements OnInit{
    
   }
 
+
+  selectRandomHiddenWord(): void {
+  const randomIndex = Math.floor(Math.random() * this.words.length);
+  this.hiddenWord = this.words[randomIndex];
+  this.selectedLetters = [];
+
+  const uniqueLetters = Array.from(new Set(this.hiddenWord.split(''))); // evitar letras repetidas
+  let lettersToReveal = 0;
+
+  if (this.hiddenWord.length > 10) {
+    lettersToReveal = 3;
+  } else if (this.hiddenWord.length > 6) {
+    lettersToReveal = 2;
+  } else if (this.hiddenWord.length > 3) {
+    lettersToReveal = 1;
+  }
+
+  while (this.selectedLetters.length < lettersToReveal && uniqueLetters.length > 0) {
+    const random = Math.floor(Math.random() * uniqueLetters.length);
+    const letter = uniqueLetters.splice(random, 1)[0];
+    this.selectedLetters.push(letter);
+  }
+
+  console.log('The hidden word is: ' + this.hiddenWord); // testing
+  console.log('Revealed letters: ' + this.selectedLetters.join(', '));
+}
+
   //NEXT: SAVE SCORE SERVICE,  ADD TOAST SERVICE
-  //DISPLAY 1 OR 2 LETTERS OF THE HIDDEN WORD SO THE USER CAN GUESS.
-
-
-
-
-
-
-
-
-
-
-
-
 }
