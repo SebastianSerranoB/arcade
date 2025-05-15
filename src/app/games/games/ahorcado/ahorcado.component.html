@@ -2,8 +2,11 @@
 
   <h1 class="text-3xl sm:text-4xl font-bold text-pink-400 text-center">💀 Ahorcado</h1>
 
-  <img [src]="currentImage" alt="Estado del ahorcado" class="w-48 sm:w-64 shadow-lg rounded-xl border-4 border-gray-700" />
-
+  <img [src]="currentImage" alt="Estado del ahorcado"class="w-48 sm:w-64 shadow-lg rounded-xl border-4 border-gray-700 transition duration-500" />
+ <!-- 
+  class="w-48 sm:w-64 shadow-lg rounded-xl border-4 border-gray-700 transition duration-500"
+  class="w-48 sm:w-64 shadow-lg rounded-xl border-4 border-gray-700" 
+  -->
   <div class="flex space-x-2 text-3xl font-mono tracking-widest">
     <span *ngFor="let letter of hiddenWord.split('')">
       {{ shownLetter(letter) }}

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ahorcado',
@@ -10,7 +11,10 @@ import { Component, OnInit } from '@angular/core';
 export class AhorcadoComponent implements OnInit{
   hiddenWord = '';
   selectedLetters: string[] = [];
-  maxAttempts = 6;
+  maxAttempts = 5;
+  currentScore = 0;
+  scorePerWord = 10;
+  wordsGuessed = 0;
 
   words: string[] = [
   'PROGRAMAR', 'ANGULAR', 'DESARROLLO', 'NEON', 'AHORCADO', 'JUEGO', 'CODIGO', 'TIPOGRAFIA',
@@ -30,7 +34,7 @@ export class AhorcadoComponent implements OnInit{
   }
 
   get currentImage(): string{
-    return `assets/ahorcado/ahorcado${this.failedAttempts}.png`;
+    return `/assets/ahorcado/ahorcado${this.failedAttempts}.png`;
   }
 
   get letters(): string[]{
@@ -40,6 +44,11 @@ export class AhorcadoComponent implements OnInit{
   selectLetter(letter: string){
     if(!this.selectedLetters.includes(letter)){
       this.selectedLetters.push(letter);
+
+      if (this.gameWon()) {
+        this.updateScore();
+        this.showGameWonToast();
+      }
     }
   }
 
@@ -58,8 +67,20 @@ export class AhorcadoComponent implements OnInit{
   restartGame(){
     this.selectedLetters = [];
     this.selectRandomHiddenWord();
-   
   }
+
+   resetGame() {
+    this.currentScore = 0;
+    this.wordsGuessed = 0;
+    this.restartGame();
+  }
+
+  updateScore(): void {
+    this.currentScore += this.scorePerWord;
+    this.wordsGuessed++;
+  }
+
+
 
 
   selectRandomHiddenWord(): void {
@@ -88,5 +109,41 @@ export class AhorcadoComponent implements OnInit{
   console.log('Revealed letters: ' + this.selectedLetters.join(', '));
 }
 
-  //NEXT: SAVE SCORE SERVICE,  ADD TOAST SERVICE
+
+
+  showGameWonToast(): void {
+    Swal.fire({
+      title: '¡Palabra Adivinada!',
+      text: `¡Ganaste ${this.scorePerWord} puntos! ¿Quieres seguir jugando?`,
+      icon: 'success',
+      showCancelButton: true,
+      confirmButtonText: 'Seguir jugando',
+      cancelButtonText: 'Guardar y salir'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.restartGame();
+      } else {
+        //invoke score service and redirect to home
+      }
+    });
+  }
+
+    showGameLostToast(): void {
+    Swal.fire({
+      title: '¡Has perdido!',
+      text: `La palabra era "${this.hiddenWord}". ¿Quieres intentarlo de nuevo?`,
+      icon: 'error',
+      showCancelButton: true,
+      confirmButtonText: 'Jugar de nuevo',
+      cancelButtonText: 'Guardar y salir'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.restartGame();
+      } else {
+        //if score > 0 save else redirect home
+      }
+    });
+  }
+
+  //NEXT save score method supabase()
 }
