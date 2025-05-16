@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
+import { GameResultService } from '../../../core/services/game-result.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ahorcado',
@@ -24,8 +26,17 @@ export class AhorcadoComponent implements OnInit{
 ];
 
 
+  constructor(private gameResultService: GameResultService, private router: Router){}
+
+
   ngOnInit(): void {
    this.selectRandomHiddenWord();
+  }
+
+  ngOnDestroy(): void {
+      if(this.currentScore > 0){
+        this.gameResultService.saveResult(this.currentScore, 'Ahorcado');
+      }
   }
 
 
@@ -48,7 +59,12 @@ export class AhorcadoComponent implements OnInit{
       if (this.gameWon()) {
         this.updateScore();
         this.showGameWonToast();
+      }else{
+        if(this.gameLost()){
+          this.showGameLostToast();
+        }
       }
+
     }
   }
 
@@ -123,7 +139,8 @@ export class AhorcadoComponent implements OnInit{
       if (result.isConfirmed) {
         this.restartGame();
       } else {
-        //invoke score service and redirect to home
+        this.gameResultService.saveResult(this.currentScore, 'Ahorcado')
+        this.router.navigate(['/home']);
       }
     });
   }
@@ -140,10 +157,13 @@ export class AhorcadoComponent implements OnInit{
       if (result.isConfirmed) {
         this.restartGame();
       } else {
-        //if score > 0 save else redirect home
+        if(this.currentScore > 0){
+          this.gameResultService.saveResult(this.currentScore, 'Ahorcado')
+        }
+        this.router.navigate(['/home']);
+        
       }
     });
   }
 
-  //NEXT save score method supabase()
 }

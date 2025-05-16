@@ -16,12 +16,13 @@ export class GameResultService {
   }
 
  
-  async saveResult(score: number): Promise<void>{
+  async saveResult(score: number, gameName: string): Promise<void>{
     const user = await this.auth.getUser();
 
     const result = {
       score,
       user_email: user?.email || 'guest',
+      game_name: gameName,
       created_at: new Date()
     };
 

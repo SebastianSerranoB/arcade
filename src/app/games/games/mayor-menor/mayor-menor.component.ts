@@ -57,7 +57,7 @@ export class MayorMenorComponent implements OnInit {
 
       if(this.lives === 0){
         this.toastService.showGameOver(this.score);
-        this.gameResultService.saveResult(this.score);
+        this.gameResultService.saveResult(this.score, 'Mayor o Menor');
         this.resetGame();
       }
 
