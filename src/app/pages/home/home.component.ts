@@ -69,5 +69,9 @@ export class HomeComponent implements OnInit{
     this.router.navigate(['/games/color-rush']);
   }
 
+  navigateToSurvey(){
+    this.router.navigate(['/survey']);
+  }
+
 
 }

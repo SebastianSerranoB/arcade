@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, effect} from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, signal, effect } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import {
   trigger,
   state,
@@ -8,23 +8,18 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-
-//import {trigger, state, style, animate, transition} from '@angular/animations'; 
+import Swal from 'sweetalert2';
+import { GameResultService } from '../../../core/services/game-result.service';
 
 @Component({
   selector: 'app-color-rush',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './color-rush.component.html',
   styleUrl: './color-rush.component.scss',
   animations: [
     trigger('flash', [
-      state(
-        'visible',
-        style({
-          opacity: 1,
-          transform: 'scale(1)',
-        })
-      ),
+      state('visible', style({ opacity: 1, transform: 'scale(1)' })),
       transition('* => visible', [
         style({ opacity: 0, transform: 'scale(0.6)' }),
         animate('250ms ease-out'),
@@ -43,100 +38,108 @@ import {
   ],
 })
 export class ColorRushComponent {
-
-roundsTotal = 10;
-timePerRoundMs = 3000;
+  roundsTotal = 10;
+  timePerRoundMs = 3000;
 
   palette = [
-  {name: 'Rojo', css: 'red-500'},
-  {name: 'Verde', css: 'green-500'},
-  {name: 'Azul', css: 'blue-500'},
-  {name: 'Amarillo', css: 'yellow-400'},
-  {name: 'Cian', css: 'cyan-400'},
-  {name: 'Magenta', css: 'fuchsia-500'},
-];
+    { name: 'Rojo', css: 'red-500' },
+    { name: 'Verde', css: 'green-500' },
+    { name: 'Azul', css: 'blue-500' },
+    { name: 'Amarillo', css: 'yellow-400' },
+    { name: 'Cian', css: 'cyan-400' },
+    { name: 'Magenta', css: 'fuchsia-500' },
+  ];
+
+  round = signal(1);
+  score = signal(0);
+  gameStarted = signal(false);
+  currentWord = signal<{ name: string; css: string }>({ name: '', css: '' });
+  timerPercent = signal(100);
+  countdown!: ReturnType<typeof setInterval>;
 
 
-round = signal(1);
-score = signal(0);
-currentWord = signal<{name: string, css: string}>({
-  name: '',
-  css:'',
-});
-timerPercent = signal(100);
-countdown!: ReturnType<typeof setInterval>;
 
-constructor(){
-  this.nextRound();
-}
 
-handleYes(): void{
-  this.evaluate(this.wordAndColorMatch());
-}
+  constructor(private gameResultService: GameResultService, private router: Router){}
 
-handleNo(): void{
-  this.evaluate(!this.wordAndColorMatch());
-}
 
-evaluate(correct: boolean): void{
-  clearInterval(this.countdown);
-  this.score.update((s) => s + (correct ? 10 : -5));
-  if(this.round() >= this.roundsTotal){
-    //toast service score service
-    this.restartGame();
-  }else{
-    this.round.update((r) => r + 1);
+
+  startGame(): void {
+    this.score.set(0);
+    this.round.set(1);
+    this.gameStarted.set(true);
     this.nextRound();
   }
-}
 
-nextRound(): void{
-  const word = this.random(this.palette).name;
-  const css = this.random(this.palette).css;
-  this.currentWord.set({name: word, css});
+  handleYes(): void {
+    this.evaluate(this.wordAndColorMatch());
+  }
 
-  //reseteo barra de progreso
-  this.timerPercent.set(100);
-  const step = 100 / (this.timePerRoundMs / 100);
-  this.countdown = setInterval(() =>{
-    this.timerPercent.update((p) => p - step);
-    if(this.timerPercent() <= 0){
-      clearInterval(this.countdown);
-      this.evaluate(false);
+  handleNo(): void {
+    this.evaluate(!this.wordAndColorMatch());
+  }
+
+  evaluate(correct: boolean): void {
+    clearInterval(this.countdown);
+    this.score.update((s) => s + (correct ? 10 : -5));
+
+    if (this.round() >= this.roundsTotal) {
+      this.endGame();
+    } else {
+      this.round.update((r) => r + 1);
+      this.nextRound();
     }
-  }, 100);
-}
+  }
 
-restartGame(): void{
-  this.round.set(1);
-  this.score.set(0);
-  this.nextRound();
-}
+  nextRound(): void {
+    const word = this.random(this.palette).name;
+    const css = this.random(this.palette).css;
+    this.currentWord.set({ name: word, css });
 
+    this.timerPercent.set(100);
+    const step = 100 / (this.timePerRoundMs / 100);
+    this.countdown = setInterval(() => {
+      this.timerPercent.update((p) => p - step);
+      if (this.timerPercent() <= 0) {
+        clearInterval(this.countdown);
+        this.evaluate(false);
+      }
+    }, 100);
+  }
 
- wordAndColorMatch(): boolean{
-  const { name, css} = this.currentWord();
-  return(
-    (name === 'Rojo' && css.startsWith('red')) ||
-    (name === 'Verde' && css.startsWith('green')) ||
-    (name === 'Azul' && css.startsWith('blue')) ||
-    (name === 'Amarillo' && css.startsWith('yellow')) ||
-    (name === 'Cian' && css.startsWith('cyan')) ||
-    (name === 'Magenta' && css.startsWith('fuchsia')) 
-  );
-}
+  endGame(): void {
+    clearInterval(this.countdown);
+    Swal.fire({
+      title: 'Juego terminado',
+      text: `Puntaje final: ${this.score()}. ¿Quieres jugar otra vez?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, jugar de nuevo',
+      cancelButtonText: 'Salir',
+    }).then((result) => {
+      this.gameResultService.saveResult(this.score(), 'Color Rush');
+      if (result.isConfirmed) {
+        this.startGame();
+      } else {
+        this.gameStarted.set(false);
+        this.router.navigate(['/home']);
+      }
+    });
+  }
 
-random<T>(arr: T[]): T{
-  return arr[Math.floor(Math.random() * arr.length)];
-}
+  wordAndColorMatch(): boolean {
+    const { name, css } = this.currentWord();
+    return (
+      (name === 'Rojo' && css.startsWith('red')) ||
+      (name === 'Verde' && css.startsWith('green')) ||
+      (name === 'Azul' && css.startsWith('blue')) ||
+      (name === 'Amarillo' && css.startsWith('yellow')) ||
+      (name === 'Cian' && css.startsWith('cyan')) ||
+      (name === 'Magenta' && css.startsWith('fuchsia'))
+    );
+  }
 
-
-
-
-
-
-
-
-
-
+  random<T>(arr: T[]): T {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
 }

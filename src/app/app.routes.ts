@@ -4,12 +4,14 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ErrorComponent } from './pages/error/error.component';
 import { authGuard } from './core/guards/auth.guard';
+import { SurveyComponent } from './pages/survey/survey.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full'},
     { path: 'login', component: LoginComponent},
     { path: 'signup', component: SignupComponent},
     { path: 'home', canActivate:[authGuard], component: HomeComponent},
+    { path: 'survey', canActivate:[authGuard], component: SurveyComponent},
     {  
         path: 'about', 
         canActivate:[authGuard], 

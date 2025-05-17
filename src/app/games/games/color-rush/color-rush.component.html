@@ -1,7 +1,7 @@
 <div
   class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center justify-center p-8"
 >
-  <!-- Title -->
+  <!-- TITLE -->
   <h2
     class="text-3xl font-extrabold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 via-indigo-400 to-cyan-400 animate-pulse"
     @flash
@@ -9,48 +9,57 @@
     ⚡ Color&nbsp;Rush
   </h2>
 
-  <!-- Word display -->
-  <div
-    class="text-6xl font-black mb-8 px-10 py-6 rounded-3xl shadow-2xl border border-white/10 transition-all duration-200"
-    [class]="'text-' + currentWord().css"
-    @flash
-  >
-    {{ currentWord().name }}
-  </div>
+  <!-- START SCREEN -->
+  <ng-container *ngIf="!gameStarted()">
+    <button
+      (click)="startGame()"
+      class="bg-indigo-600 hover:bg-indigo-500 text-white px-10 py-5 rounded-2xl font-bold text-xl shadow-lg"
+      @flash
+    >
+      Comenzar juego
+    </button>
+  </ng-container>
 
-  <!-- Progress bar -->
-  <div class="w-72 h-3 bg-white/20 rounded-full overflow-hidden mb-8">
+  <!-- GAME UI -->
+  <ng-container *ngIf="gameStarted()">
+    <!-- WORD -->
     <div
-      class="h-full bg-emerald-400 transition-[width]"
-      [style.width.%]="timerPercent()"
-    ></div>
-  </div>
-
-  <!-- Buttons -->
-  <div class="flex gap-8">
-    <button
-      (click)="handleYes()"
-      class="bg-emerald-600 hover:bg-emerald-500 font-bold text-xl px-8 py-4 rounded-2xl shadow-lg active:scale-95 transition"
+      class="text-6xl font-black mb-8 px-10 py-6 rounded-3xl shadow-2xl border border-white/10 transition-all duration-200"
+      [class]="'text-' + currentWord().css"
       @flash
     >
-      ✅ ¡Coincide!
-    </button>
-    <button
-      (click)="handleNo()"
-      class="bg-rose-600 hover:bg-rose-500 font-bold text-xl px-8 py-4 rounded-2xl shadow-lg active:scale-95 transition"
-      @flash
-    >
-      ❌ No coincide
-    </button>
-  </div>
+      {{ currentWord().name }}
+    </div>
 
-  <!-- Score / round -->
-  <p
-    class="mt-8 text-gray-300 text-lg font-mono"
-    [@scoreChange]="score()"
-  >
-    Puntaje: {{ score() }}&nbsp;&nbsp;|&nbsp;&nbsp;Ronda: {{
-      round()
-    }}/{{ roundsTotal }}
-  </p>
+    <!-- PROGRESS BAR -->
+    <div class="w-72 h-3 bg-white/20 rounded-full overflow-hidden mb-8">
+      <div
+        class="h-full bg-emerald-400 transition-[width]"
+        [style.width.%]="timerPercent()"
+      ></div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="flex gap-8">
+      <button
+        (click)="handleYes()"
+        class="bg-emerald-600 hover:bg-emerald-500 font-bold text-xl px-8 py-4 rounded-2xl shadow-lg active:scale-95 transition"
+        @flash
+      >
+        ✅ ¡Coincide!
+      </button>
+      <button
+        (click)="handleNo()"
+        class="bg-rose-600 hover:bg-rose-500 font-bold text-xl px-8 py-4 rounded-2xl shadow-lg active:scale-95 transition"
+        @flash
+      >
+        ❌ No coincide
+      </button>
+    </div>
+
+    <!-- SCORE -->
+    <p class="mt-8 text-gray-300 text-lg font-mono" [@scoreChange]="score()">
+      Puntaje: {{ score() }} &nbsp;|&nbsp; Ronda: {{ round() }}/{{ roundsTotal }}
+    </p>
+  </ng-container>
 </div>

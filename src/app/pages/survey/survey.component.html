@@ -1,0 +1,54 @@
+<div class="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
+  <h2 class="text-3xl font-bold mb-4 text-blue-400 text-center">📋 Encuesta</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-full max-w-md space-y-4">
+
+    <input class="w-full p-3 rounded-xl bg-gray-700 text-white" type="text" formControlName="name" placeholder="Nombre y Apellido">
+    <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="text-red-400 text-sm">Campo requerido.</div>
+
+    <input class="w-full p-3 rounded-xl bg-gray-700 text-white" type="number" formControlName="age" placeholder="Edad">
+    <div *ngIf="form.get('age')?.invalid && form.get('age')?.touched" class="text-red-400 text-sm">Edad entre 18 y 98 años.</div>
+
+    <input class="w-full p-3 rounded-xl bg-gray-700 text-white" type="text" formControlName="phone" placeholder="Número de teléfono">
+    <div *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched" class="text-red-400 text-sm">Solo números, máximo 10 dígitos.</div>
+
+    <label class="flex items-center space-x-2">
+      <input type="checkbox" formControlName="likesGames" class="accent-purple-500">
+      <span>¿Te gustan los videojuegos?</span>
+    </label>
+    <div *ngIf="form.get('likesGames')?.invalid && form.get('likesGames')?.touched" class="text-red-400 text-sm">Campo requerido.</div>
+
+    <div>
+      <label>¿Cuál es tu género favorito?</label>
+      <select formControlName="favoriteGenre" class="w-full mt-1 p-3 rounded-xl bg-gray-700 text-white">
+        <option value="">Selecciona uno</option>
+        <option value="acción">Acción</option>
+        <option value="aventura">Aventura</option>
+        <option value="estrategia">Estrategia</option>
+        <option value="deportes">Deportes</option>
+      </select>
+      <div *ngIf="form.get('favoriteGenre')?.invalid && form.get('favoriteGenre')?.touched" class="text-red-400 text-sm">Campo requerido.</div>
+    </div>
+
+    <div>
+      <label>¿Querés recibir noticias?</label>
+      <div class="flex gap-4 mt-1">
+        <label class="flex items-center gap-2">
+          <input type="radio" formControlName="newsletter" [value]="true" class="accent-green-500">
+          Sí
+        </label>
+        <label class="flex items-center gap-2">
+          <input type="radio" formControlName="newsletter" [value]="false" class="accent-red-500">
+          No
+        </label>
+      </div>
+      <div *ngIf="form.get('newsletter')?.invalid && form.get('newsletter')?.touched" class="text-red-400 text-sm">Campo requerido.</div>
+    </div>
+
+    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 transition text-white font-bold py-3 px-6 rounded-xl shadow-lg">
+      Enviar
+    </button>
+
+    <button type="button" (click)="navigateToHome()" class="w-full mt-2 text-sm text-gray-300 hover:text-white underline">← Volver</button>
+  </form>
+</div>
