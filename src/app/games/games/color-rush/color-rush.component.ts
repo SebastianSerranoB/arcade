@@ -1,7 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal, effect} from '@angular/core';
 import { RouterModule } from '@angular/router';
-
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+} from '@angular/animations';
 
 //import {trigger, state, style, animate, transition} from '@angular/animations'; 
 
@@ -10,6 +16,31 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, RouterModule],
   templateUrl: './color-rush.component.html',
   styleUrl: './color-rush.component.scss',
+  animations: [
+    trigger('flash', [
+      state(
+        'visible',
+        style({
+          opacity: 1,
+          transform: 'scale(1)',
+        })
+      ),
+      transition('* => visible', [
+        style({ opacity: 0, transform: 'scale(0.6)' }),
+        animate('250ms ease-out'),
+      ]),
+    ]),
+    trigger('scoreChange', [
+      transition(':increment', [
+        style({ transform: 'translateY(-10px)', opacity: 0 }),
+        animate('200ms', style({ transform: 'translateY(0)', opacity: 1 })),
+      ]),
+      transition(':decrement', [
+        style({ transform: 'translateY(10px)', opacity: 0 }),
+        animate('200ms', style({ transform: 'translateY(0)', opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class ColorRushComponent {
 

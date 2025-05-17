@@ -2,6 +2,7 @@ import { Routes } from "@angular/router";
 import { MayorMenorComponent } from "./mayor-menor/mayor-menor.component";
 import { AhorcadoComponent } from "./ahorcado/ahorcado.component";
 import { PreguntadosComponent } from "./preguntados/preguntados.component";
+import { ColorRushComponent } from "./color-rush/color-rush.component";
 
 export const routes: Routes = [
     {
@@ -20,6 +21,10 @@ export const routes: Routes = [
     {
         path: 'preguntados',
         component: PreguntadosComponent
+    },
+    {
+        path: 'color-rush',
+        component: ColorRushComponent
     }
 
 ];

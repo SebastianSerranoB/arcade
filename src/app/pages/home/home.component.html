@@ -11,20 +11,12 @@
       
       <button (click)="navigateToPreguntados()" class="bg-gray-700 hover:bg-green-600 transition rounded-xl p-6 text-center font-semibold text-white shadow-lg">🎯 Preguntados</button>
 
-      <a
-        routerLink="/juego-4"
-        class="bg-gray-700 hover:bg-pink-600 transition rounded-xl p-6 text-center font-semibold text-white shadow-lg"
-      >
-        🚀 Juego 4
-      </a>
+      <button (click)="navigateToColorRush()" class="bg-gray-700 hover:bg-pink-600 transition rounded-xl p-6 text-center font-semibold text-white shadow-lg">🚀 Color Rush</button>
+
     </div>
 
    
-    <button
-    (click)="router.navigate(['/chat-room'])"
-    class="fixed bottom-6 right-6 bg-cyan-500 hover:bg-cyan-600 text-white p-4 rounded-full shadow-lg z-50">
-    💬
-    </button>
+    <button (click)="router.navigate(['/chat-room'])"  class="fixed bottom-6 right-6 bg-cyan-500 hover:bg-cyan-600 text-white p-4 rounded-full shadow-lg z-50">💬</button>
 
   </div>
   
